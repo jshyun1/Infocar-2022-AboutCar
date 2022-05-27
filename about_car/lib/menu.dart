@@ -1,3 +1,4 @@
+import 'package:about_car/dignosis.dart';
 import 'package:flutter/material.dart';
 import './dignosisResult.dart';
 
@@ -14,7 +15,13 @@ class Menu extends StatelessWidget {
           ));
     }
 
-    void _toDiagnosis() {}
+    void _toDiagnosis() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dignosis(),
+          ));
+    }
 
     return MaterialApp(
       home: Scaffold(
@@ -35,7 +42,10 @@ class Menu extends StatelessWidget {
                 ),
                 child: const Text(
                   "menu",
-                  style: TextStyle(fontSize: 40, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: 40,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(
