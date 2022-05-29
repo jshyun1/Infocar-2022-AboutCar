@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './menu.dart';
+import './sqlite.dart';
 
 class Result extends StatelessWidget {
   const Result({Key? key}) : super(key: key);
@@ -35,6 +36,8 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  late ValueNotifier<int> _counter = ValueNotifier<int>(0);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -70,9 +73,15 @@ class _ResultPageState extends State<ResultPage> {
                       padding: const EdgeInsets.only(
                         left: 20,
                       ),
-                      child: const Text(
-                        "3건 \u{1F697}",
-                        style: TextStyle(fontSize: 30, color: Colors.black),
+                      child: ValueListenableBuilder(
+                        valueListenable: _counter,
+                        builder:
+                            (BuildContext context, int value, Widget? child) {
+                          return Text(
+                            "$value건 \u{1F697}",
+                            style: TextStyle(fontSize: 30, color: Colors.black),
+                          );
+                        },
                       )),
                   Container(
                       padding: EdgeInsets.only(right: 20),
@@ -86,18 +95,34 @@ class _ResultPageState extends State<ResultPage> {
           ),
         ),
         Container(
-          height: MediaQuery.of(context).size.height * 0.7,
-          color: Color(0xff9FBEED).withOpacity(0.24),
-          width: double.infinity,
-          child: ListView.builder(
-              padding: EdgeInsets.only(top: 0),
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  child: TroubleTile(TroubleCode("P0010")),
-                );
-              }),
-        )
+            height: MediaQuery.of(context).size.height * 0.7,
+            color: Color(0xff9FBEED).withOpacity(0.24),
+            width: double.infinity,
+            child: FutureBuilder<List<ResultCode>>(
+              future: DatabaseHelper.instance.getall(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<ResultCode>> snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data!.isEmpty
+                      ? Container(child: Text("CLEAN"))
+                      : ListView.builder(
+                          padding: EdgeInsets.only(top: 0),
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            _counter.value = snapshot.data!.length;
+                            if (snapshot.data![index].code == 'null') {
+                              return Container(child: Text("CLEAN"));
+                            }
+                            TroubleCode item =
+                                TroubleCode(snapshot.data![index].code);
+                            return TroubleTile(item);
+                          },
+                        );
+                } else {
+                  return Container(child: Text("CLEAN"));
+                }
+              },
+            ))
       ],
     );
   }

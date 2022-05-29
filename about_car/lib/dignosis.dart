@@ -1,3 +1,5 @@
+import 'package:about_car/dignosisResult.dart';
+import 'package:about_car/sqlite.dart';
 import 'package:flutter/material.dart';
 import './menu.dart';
 
@@ -41,7 +43,6 @@ class _DignosisPageState extends State<DignosisPage> {
     return Column(
       children: [
         Container(
-          color: Colors.white,
           height: MediaQuery.of(context).size.height * 0.3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,15 +53,12 @@ class _DignosisPageState extends State<DignosisPage> {
               Container(
                 padding: EdgeInsets.only(left: 20, top: 25),
                 child: const Text(
-                  "고장 잔단 시작하기",
+                  "고장 진단 시작하기",
                   style: TextStyle(
                       fontSize: 25,
                       color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(
-                height: 40,
               ),
             ],
           ),
@@ -69,6 +67,21 @@ class _DignosisPageState extends State<DignosisPage> {
           height: MediaQuery.of(context).size.height * 0.7,
           color: Color(0xff9FBEED).withOpacity(0.24),
           width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              DatabaseHelper.instance.delete();
+              List<ResultCode> code = [
+                ResultCode(id: 3, code: 'null', update_date: '2020-05-28'),
+              ];
+              for (int i = 0; i < code.length; i++) {
+                ResultCode result = code[i];
+                DatabaseHelper.instance.add(result);
+                print("add item");
+                setState(() {});
+              }
+            },
+            child: Text('진단하기'),
+          ),
         )
       ],
     );

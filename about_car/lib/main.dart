@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './menu.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     home: Menu(),
   ));
