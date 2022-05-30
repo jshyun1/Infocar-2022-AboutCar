@@ -36,8 +36,6 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
-  late ValueNotifier<int> _counter = ValueNotifier<int>(0);
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -73,15 +71,11 @@ class _ResultPageState extends State<ResultPage> {
                       padding: const EdgeInsets.only(
                         left: 20,
                       ),
-                      child: ValueListenableBuilder(
-                        valueListenable: _counter,
-                        builder:
-                            (BuildContext context, int value, Widget? child) {
-                          return Text(
-                            "$value건 \u{1F697}",
-                            style: TextStyle(fontSize: 30, color: Colors.black),
-                          );
-                        },
+                      child: Container(
+                        child: Text(
+                          " 건 \u{1F697}",
+                          style: TextStyle(fontSize: 30, color: Colors.black),
+                        ),
                       )),
                   Container(
                       padding: EdgeInsets.only(right: 20),
@@ -104,14 +98,19 @@ class _ResultPageState extends State<ResultPage> {
                   AsyncSnapshot<List<ResultCode>> snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!.isEmpty
-                      ? Container(child: Text("CLEAN"))
+                      ? Container(child: Center(child: Text("no data")))
                       : ListView.builder(
                           padding: EdgeInsets.only(top: 0),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            _counter.value = snapshot.data!.length;
                             if (snapshot.data![index].code == 'null') {
-                              return Container(child: Text("CLEAN"));
+                              return Card(
+                                  child: Center(
+                                child: Text(
+                                  "CLEAN",
+                                  style: TextStyle(fontSize: 30),
+                                ),
+                              ));
                             }
                             TroubleCode item =
                                 TroubleCode(snapshot.data![index].code);
@@ -119,7 +118,13 @@ class _ResultPageState extends State<ResultPage> {
                           },
                         );
                 } else {
-                  return Container(child: Text("CLEAN"));
+                  return Card(
+                      child: Center(
+                    child: Text(
+                      "CLEAN",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ));
                 }
               },
             ))

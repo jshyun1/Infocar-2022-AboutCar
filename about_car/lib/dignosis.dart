@@ -67,20 +67,27 @@ class _DignosisPageState extends State<DignosisPage> {
           height: MediaQuery.of(context).size.height * 0.7,
           color: Color(0xff9FBEED).withOpacity(0.24),
           width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              DatabaseHelper.instance.delete();
-              List<ResultCode> code = [
-                ResultCode(id: 3, code: 'null', update_date: '2020-05-28'),
-              ];
-              for (int i = 0; i < code.length; i++) {
-                ResultCode result = code[i];
-                DatabaseHelper.instance.add(result);
-                print("add item");
-                setState(() {});
-              }
-            },
-            child: Text('진단하기'),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  DatabaseHelper.instance.delete();
+                  // List<ResultCode> code = [
+                  //   ResultCode(id: 3, code: 'null', update_date: '2020-05-28'),
+                  // ];
+                  // for (int i = 0; i < code.length; i++) {
+                  //   ResultCode result = code[i];
+                  //   DatabaseHelper.instance.add(result);
+                  //   print("add item");
+                  //   setState(() {});
+                  // }
+                },
+                child: Text('진단하기'),
+              ),
+            ],
           ),
         )
       ],
