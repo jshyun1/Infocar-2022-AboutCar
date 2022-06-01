@@ -1,10 +1,14 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import './menu.dart';
-import './sqlite.dart';
+
+import 'Truble_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Result extends StatelessWidget {
-  const Result({Key? key}) : super(key: key);
-
+  Result({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -47,8 +51,8 @@ class _ResultPageState extends State<ResultPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 100,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3 * 0.4,
               ),
               Container(
                 padding: EdgeInsets.only(left: 20, top: 25),
@@ -60,17 +64,12 @@ class _ResultPageState extends State<ResultPage> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(
-                height: 40,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //일단 3건으로 작성해놓은 상태, 향후 db연결 후  갯수를 넣어주면 될 것 같습니다.
                 children: [
                   Container(
-                      padding: const EdgeInsets.only(
-                        left: 20,
-                      ),
+                      padding: const EdgeInsets.only(left: 20, top: 10),
                       child: Container(
                         child: Text(
                           " 건 \u{1F697}",
@@ -78,9 +77,9 @@ class _ResultPageState extends State<ResultPage> {
                         ),
                       )),
                   Container(
-                      padding: EdgeInsets.only(right: 20),
-                      child: const Text(
-                        "2020년 05월 23일 기준",
+                      padding: EdgeInsets.only(right: 20, top: 10),
+                      child: Text(
+                        "",
                         style: TextStyle(fontSize: 15, color: Colors.grey),
                       )),
                 ],
@@ -92,39 +91,21 @@ class _ResultPageState extends State<ResultPage> {
             height: MediaQuery.of(context).size.height * 0.7,
             color: Color(0xff9FBEED).withOpacity(0.24),
             width: double.infinity,
-            child: FutureBuilder<List<ResultCode>>(
-              future: DatabaseHelper.instance.getall(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ResultCode>> snapshot) {
-                if (snapshot.hasData) {
-                  return snapshot.data!.isEmpty
-                      ? Container(child: Center(child: Text("no data")))
-                      : ListView.builder(
-                          padding: EdgeInsets.only(top: 0),
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (snapshot.data![index].code == 'null') {
-                              return Card(
-                                  child: Center(
-                                child: Text(
-                                  "CLEAN",
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                              ));
-                            }
-                            TroubleCode item =
-                                TroubleCode(snapshot.data![index].code);
-                            return TroubleTile(item);
-                          },
-                        );
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("/TrubleCode")
+                  .snapshots(),
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
                 } else {
-                  return Card(
-                      child: Center(
-                    child: Text(
-                      "CLEAN",
-                      style: TextStyle(fontSize: 30),
-                    ),
-                  ));
+                  return (ListView.builder(
+                      padding: const EdgeInsets.only(top: 0),
+                      itemCount: snapshot.data?.docs.length,
+                      itemBuilder: (context, index) {
+                        return TroubleTile(snapshot.data!.docs[index]['code']);
+                        // return TroubleTile(snapshot.data!.docs[index]['code']);
+                      }));
                 }
               },
             ))
@@ -133,16 +114,10 @@ class _ResultPageState extends State<ResultPage> {
   }
 }
 
-//db에서 불러올 고장 코드
-class TroubleCode {
-  String code;
-  TroubleCode(this.code);
-}
-
 //고장 코드 리스트에 들어가는 카드
 class TroubleTile extends StatelessWidget {
-  TroubleTile(this._trouble);
-  final TroubleCode _trouble;
+  TroubleTile(this._code);
+  final String _code;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +131,7 @@ class TroubleTile extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(8.0),
-                child: Text(_trouble.code,
+                child: Text(_code,
                     style: TextStyle(fontSize: 30, color: Colors.black)),
               ),
               Divider()

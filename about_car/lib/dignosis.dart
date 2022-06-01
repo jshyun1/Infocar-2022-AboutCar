@@ -72,21 +72,6 @@ class _DignosisPageState extends State<DignosisPage> {
               SizedBox(
                 height: 100,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  DatabaseHelper.instance.delete();
-                  // List<ResultCode> code = [
-                  //   ResultCode(id: 3, code: 'null', update_date: '2020-05-28'),
-                  // ];
-                  // for (int i = 0; i < code.length; i++) {
-                  //   ResultCode result = code[i];
-                  //   DatabaseHelper.instance.add(result);
-                  //   print("add item");
-                  //   setState(() {});
-                  // }
-                },
-                child: Text('진단하기'),
-              ),
             ],
           ),
         )
