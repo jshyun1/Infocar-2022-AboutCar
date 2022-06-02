@@ -1,10 +1,5 @@
-import 'dart:async';
-import 'dart:developer';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
-import './menu.dart';
-
-import 'Truble_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Result extends StatelessWidget {
@@ -50,9 +45,10 @@ class _ResultPageState extends State<ResultPage> {
           height: MediaQuery.of(context).size.height * 0.3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3 * 0.4,
+                height: 20,
               ),
               Container(
                 padding: EdgeInsets.only(left: 20, top: 25),
@@ -64,26 +60,41 @@ class _ResultPageState extends State<ResultPage> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //일단 3건으로 작성해놓은 상태, 향후 db연결 후  갯수를 넣어주면 될 것 같습니다.
-                children: [
-                  Container(
-                      padding: const EdgeInsets.only(left: 20, top: 10),
-                      child: Container(
-                        child: Text(
-                          " 건 \u{1F697}",
-                          style: TextStyle(fontSize: 30, color: Colors.black),
-                        ),
-                      )),
-                  Container(
-                      padding: EdgeInsets.only(right: 20, top: 10),
-                      child: Text(
-                        "",
-                        style: TextStyle(fontSize: 15, color: Colors.grey),
-                      )),
-                ],
-              ),
+              Container(
+                  padding: const EdgeInsets.only(left: 20, top: 10),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("/TrubleCode")
+                          .snapshots(),
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (!snapshot.hasData) {
+                          return const Text(
+                            "0 건 \u{1F697}",
+                            style: TextStyle(fontSize: 30, color: Colors.black),
+                          );
+                        } else {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${snapshot.data?.docs.length} 건 \u{1F697}",
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.black),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(right: 20, top: 10),
+                                  child: Text(
+                                    "${snapshot.data?.docs.first['date']} 기준",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  )),
+                            ],
+                          );
+                        }
+                      })),
             ],
           ),
         ),
@@ -103,7 +114,17 @@ class _ResultPageState extends State<ResultPage> {
                       padding: const EdgeInsets.only(top: 0),
                       itemCount: snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
-                        return TroubleTile(snapshot.data!.docs[index]['code']);
+                        if (snapshot.data!.docs.first['code'] == 'null') {
+                          return Card(
+                              child: Center(
+                                  child: Text(
+                            'CLAEN',
+                            style: TextStyle(fontSize: 30, color: Colors.black),
+                          )));
+                        } else {
+                          return TroubleTile(
+                              snapshot.data!.docs[index]['code']);
+                        }
                         // return TroubleTile(snapshot.data!.docs[index]['code']);
                       }));
                 }
@@ -114,6 +135,15 @@ class _ResultPageState extends State<ResultPage> {
   }
 }
 
+//  Text(
+//                           " 건 \u{1F697}",
+//                           style: TextStyle(fontSize: 30, color: Colors.black),
+//                         ),
+// ListView.builder(
+//                       padding: const EdgeInsets.only(top: 0),
+//                       itemCount: snapshot.data?.docs.length,
+//                       itemBuilder: (context, index) {
+//                         return TroubleTile(snapshot.data!.docs[index]['code']);
 //고장 코드 리스트에 들어가는 카드
 class TroubleTile extends StatelessWidget {
   TroubleTile(this._code);
@@ -121,11 +151,19 @@ class TroubleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Uri url = Uri.parse('https://www.google.co.kr');
+    void _toSearchPage(Uri url) async {
+      if (!await launchUrl(url)) throw 'could not launch';
+    }
+
     // TODO: implement build
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
         child: ListTile(
+          onTap: () {
+            _toSearchPage(Uri.parse('https://www.google.co.kr'));
+          },
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
