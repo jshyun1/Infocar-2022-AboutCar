@@ -42,7 +42,6 @@ class _DignosisPageState extends State<DoDignosisPage> {
   bool _isButtonDisabled = true;
   @override
   Widget build(BuildContext context) {
-    showNotification();
     void _toDignosis() {
       if (_isButtonDisabled) {
       } else {
