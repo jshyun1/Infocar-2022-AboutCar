@@ -1,6 +1,7 @@
 import 'package:about_car/dignosis.dart';
 import 'package:flutter/material.dart';
 import './dignosisResult.dart';
+import 'notification.dart';
 
 class Menu extends StatelessWidget {
   const Menu({Key? key}) : super(key: key);

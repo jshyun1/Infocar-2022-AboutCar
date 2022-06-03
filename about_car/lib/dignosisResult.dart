@@ -1,6 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:animate_do/animate_do.dart';
 
 class Result extends StatelessWidget {
   Result({Key? key}) : super(key: key);
@@ -81,14 +82,14 @@ class _ResultPageState extends State<ResultPage> {
                             children: [
                               Text(
                                 "${snapshot.data?.docs.length} 건 \u{1F697}",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 30, color: Colors.black),
                               ),
                               Container(
                                   padding: EdgeInsets.only(right: 20, top: 10),
                                   child: Text(
                                     "${snapshot.data?.docs.first['date']} 기준",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 15, color: Colors.grey),
                                   )),
                             ],
@@ -115,15 +116,17 @@ class _ResultPageState extends State<ResultPage> {
                       itemCount: snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
                         if (snapshot.data!.docs.first['code'] == 'null') {
-                          return Card(
+                          return const Card(
                               child: Center(
                                   child: Text(
                             'CLAEN',
                             style: TextStyle(fontSize: 30, color: Colors.black),
                           )));
                         } else {
-                          return TroubleTile(
-                              snapshot.data!.docs[index]['code']);
+                          return FadeInUp(
+                            child:
+                                TroubleTile(snapshot.data!.docs[index]['code']),
+                          );
                         }
                         // return TroubleTile(snapshot.data!.docs[index]['code']);
                       }));
@@ -151,7 +154,7 @@ class TroubleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Uri url = Uri.parse('https://www.google.co.kr');
+    //final Uri url = Uri.parse('https://www.google.co.kr');
     void _toSearchPage(Uri url) async {
       if (!await launchUrl(url)) throw 'could not launch';
     }
@@ -162,7 +165,8 @@ class TroubleTile extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: () {
-            _toSearchPage(Uri.parse('https://www.google.co.kr'));
+            _toSearchPage(
+                Uri.parse('https://www.google.com/search?q=${_code}'));
           },
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
