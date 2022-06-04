@@ -1,14 +1,34 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import './menu.dart';
 import 'notification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  _initNotiSetting();
   runApp(MaterialApp(
     home: Menu(),
   ));
+}
+
+void _initNotiSetting() async {
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final initSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/ic_launcher');
+  final initSettingsIOS = IOSInitializationSettings(
+    requestSoundPermission: true,
+    requestBadgePermission: false,
+    requestAlertPermission: false,
+  );
+  final initSettings = InitializationSettings(
+    android: initSettingsAndroid,
+    iOS: initSettingsIOS,
+  );
+  await flutterLocalNotificationsPlugin.initialize(
+    initSettings,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.

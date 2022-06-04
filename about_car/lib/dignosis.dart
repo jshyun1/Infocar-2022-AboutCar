@@ -77,9 +77,9 @@ class _DignosisPageState extends State<DignosisPage> {
               FadeInUp(
                 child: Center(
                   child: Container(
-                    width: 250,
-                    height: 200,
-                    child: Image.asset('assets/car.png'),
+                    width: 300,
+                    height: 300,
+                    child: Image.asset('assets/01.png'),
                   ),
                 ),
               ),

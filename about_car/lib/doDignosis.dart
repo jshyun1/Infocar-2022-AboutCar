@@ -78,7 +78,7 @@ class _DignosisPageState extends State<DoDignosisPage> {
                 builder: (BuildContext context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
-                  } else if (snapshot.data!.docs.length == 0) {
+                  } else if (snapshot.data!.docs.isEmpty) {
                     _isButtonDisabled = true;
                     return Expanded(
                       child: Column(
@@ -155,9 +155,9 @@ class _DignosisPageState extends State<DoDignosisPage> {
                           FadeInUp(
                             child: Center(
                               child: Container(
-                                width: 250,
-                                height: 200,
-                                child: Image.asset('assets/car.png'),
+                                width: 300,
+                                height: 300,
+                                child: Image.asset('assets/02.png'),
                               ),
                             ),
                           ),
@@ -167,6 +167,7 @@ class _DignosisPageState extends State<DoDignosisPage> {
                               height: 200,
                               child: ElevatedButton(
                                 onPressed: () {
+                                  // showNotification();
                                   _toDignosis();
                                 },
                                 child: const Text('결과보러가기',
