@@ -61,64 +61,66 @@ class _DignosisPageState extends State<DignosisPage> {
           height: MediaQuery.of(context).size.height * 0.85,
           color: Color(0xff9FBEED).withOpacity(0.24),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                  padding: EdgeInsets.only(left: 20, top: 20),
-                  child: FadeInUp(
-                    child: const Text("내 차량 데이터로\n고장을 예측하고 확인 해보세요\u{2757}",
-                        style: TextStyle(
-                            fontSize: 28,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w100)),
-                  )),
-              FadeInUp(
-                child: Center(
-                  child: Container(
-                    width: 300,
-                    height: 300,
-                    child: Image.asset('assets/01.png'),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    padding: EdgeInsets.only(left: 20, top: 20),
+                    child: FadeInUp(
+                      child: const Text("내 차량 데이터로\n고장을 예측하고 확인 해보세요\u{2757}",
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w100)),
+                    )),
+                FadeInUp(
+                  child: Center(
+                    child: Container(
+                      width: 300,
+                      height: 300,
+                      child: Image.asset('assets/01.png'),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                  padding: EdgeInsets.only(left: 20, top: 20),
-                  child: FadeInUp(
-                    child: const Text(
-                        "앱에서 실행 하지 않아도\n자동으로 수행 후 \n고장이 있을 시 알림을 드립니다.",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black87,
-                        )),
-                  )),
-              FadeInUp(
-                child: Container(
-                    width: MediaQuery.of(context).size.height * 1.0,
-                    height: MediaQuery.of(context).size.height * 0.85 * 0.25,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _toDignosis();
-                      },
-                      child: const Text('진단하러가기',
+                Container(
+                    padding: EdgeInsets.only(left: 20, top: 20),
+                    child: FadeInUp(
+                      child: const Text(
+                          "앱에서 실행 하지 않아도\n자동으로 수행 후 \n고장이 있을 시 알림을 드립니다.",
                           style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.white,
+                            fontSize: 20,
+                            color: Colors.black87,
                           )),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) {
-                          if (states.contains(MaterialState.disabled)) {
-                            return Colors.grey;
-                          } else {
-                            return Color(0xff8BB4F2);
-                          }
-                        },
-                      )),
                     )),
-              ),
-            ],
+                FadeInUp(
+                  child: Container(
+                      width: MediaQuery.of(context).size.height * 1.0,
+                      height: MediaQuery.of(context).size.height * 0.85 * 0.25,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _toDignosis();
+                        },
+                        child: const Text('진단하러가기',
+                            style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white,
+                            )),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) {
+                            if (states.contains(MaterialState.disabled)) {
+                              return Colors.grey;
+                            } else {
+                              return Color(0xff8BB4F2);
+                            }
+                          },
+                        )),
+                      )),
+                ),
+              ],
+            ),
           ),
         )
       ],

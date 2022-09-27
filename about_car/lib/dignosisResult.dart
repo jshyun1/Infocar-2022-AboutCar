@@ -71,11 +71,6 @@ class _ResultPageState extends State<ResultPage> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return CircularProgressIndicator();
-                        } else if (!snapshot.hasData) {
-                          return const Text(
-                            "0 건 \u{1F697}",
-                            style: TextStyle(fontSize: 30, color: Colors.black),
-                          );
                         } else {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +110,7 @@ class _ResultPageState extends State<ResultPage> {
                       padding: const EdgeInsets.only(top: 0),
                       itemCount: snapshot.data?.docs.length,
                       itemBuilder: (context, index) {
-                        if (snapshot.data!.docs.first['code'] == 'null') {
+                        if (snapshot.data?.docs.first['code'] == 'null') {
                           return const Card(
                               child: Center(
                                   child: Text(
@@ -125,12 +120,12 @@ class _ResultPageState extends State<ResultPage> {
                         } else {
                           return FadeInUp(
                             child:
-                                TroubleTile(snapshot.data!.docs[index]['code']),
+                                TroubleTile(snapshot.data?.docs[index]['code']),
                           );
                         }
-                        // return TroubleTile(snapshot.data!.docs[index]['code']);
                       }));
                 }
+                ;
               },
             ))
       ],
