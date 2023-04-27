@@ -3,8 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 Future<void> showNotification() async {
   var android = const AndroidNotificationDetails('channelId', 'channelName',
       channelDescription: 'channelDescription');
-  var iOS = IOSNotificationDetails();
-  var platform = NotificationDetails(android: android, iOS: iOS);
+  var platform = NotificationDetails(android: android);
 
   await FlutterLocalNotificationsPlugin().schedule(
       0,

@@ -17,14 +17,14 @@ void _initNotiSetting() async {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   final initSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
-  final initSettingsIOS = IOSInitializationSettings(
-    requestSoundPermission: true,
-    requestBadgePermission: false,
-    requestAlertPermission: false,
-  );
+  // final initSettingsIOS = IOSInitializationSettings(
+  //   requestSoundPermission: true,
+  //   requestBadgePermission: false,
+  //   requestAlertPermission: false,
+  // );
   final initSettings = InitializationSettings(
     android: initSettingsAndroid,
-    iOS: initSettingsIOS,
+    // iOS: initSettingsIOS,
   );
   await flutterLocalNotificationsPlugin.initialize(
     initSettings,

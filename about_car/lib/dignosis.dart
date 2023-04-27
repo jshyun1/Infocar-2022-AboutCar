@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'doDignosis.dart';
 import 'package:animate_do/animate_do.dart';
+import './service/lgbm_service.dart';
 
 class Dignosis extends StatelessWidget {
   const Dignosis({Key? key}) : super(key: key);
@@ -39,6 +41,11 @@ class _DignosisPageState extends State<DignosisPage> {
   @override
   Widget build(BuildContext context) {
     void _toDignosis() {
+      MLService service = MLService();
+      // late Future<void> lgbm_result = service.lgbm_service();
+      service.lgbm_service();
+      // ignore: unrelated_type_equality_checks
+
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -51,11 +58,7 @@ class _DignosisPageState extends State<DignosisPage> {
       children: [
         Container(
           height: MediaQuery.of(context).size.height * 0.15,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
-          ),
+          child: SizedBox(),
         ),
         Container(
           height: MediaQuery.of(context).size.height * 0.85,
@@ -102,11 +105,6 @@ class _DignosisPageState extends State<DignosisPage> {
                         onPressed: () {
                           _toDignosis();
                         },
-                        child: const Text('진단하러가기',
-                            style: TextStyle(
-                              fontSize: 40,
-                              color: Colors.white,
-                            )),
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.resolveWith(
                           (states) {
@@ -117,6 +115,11 @@ class _DignosisPageState extends State<DignosisPage> {
                             }
                           },
                         )),
+                        child: const Text('진단하러가기',
+                            style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white,
+                            )),
                       )),
                 ),
               ],

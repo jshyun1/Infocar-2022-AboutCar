@@ -2,7 +2,6 @@ import 'package:about_car/dignosisResult.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
-
 import 'notification.dart';
 
 class DoDignosis extends StatelessWidget {
@@ -39,10 +38,12 @@ class DoDignosisPage extends StatefulWidget {
 }
 
 class _DignosisPageState extends State<DoDignosisPage> {
+  late Future<String?> lgbm_result;
+
   bool _isButtonDisabled = true;
   @override
   Widget build(BuildContext context) {
-    void _toDignosis() {
+    void _toResult() {
       if (_isButtonDisabled) {
       } else {
         Navigator.push(
@@ -57,6 +58,8 @@ class _DignosisPageState extends State<DoDignosisPage> {
     void initState() {
       _isButtonDisabled = true;
     }
+
+    //need to add notification
 
     // TODO: implement build
     return Column(
@@ -112,7 +115,7 @@ class _DignosisPageState extends State<DoDignosisPage> {
                                   0.25,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  _toDignosis();
+                                  _toResult();
                                 },
                                 child: const Text('결과보러가기',
                                     style: TextStyle(
@@ -168,7 +171,7 @@ class _DignosisPageState extends State<DoDignosisPage> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   // showNotification();
-                                  _toDignosis();
+                                  _toResult();
                                 },
                                 child: const Text('결과보러가기',
                                     style: TextStyle(

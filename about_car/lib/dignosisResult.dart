@@ -71,6 +71,24 @@ class _ResultPageState extends State<ResultPage> {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
                           return CircularProgressIndicator();
+                        } else if (!snapshot.hasData) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "0 건 \u{1F697}",
+                                style: TextStyle(
+                                    fontSize: 30, color: Colors.black),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.only(right: 20, top: 10),
+                                  child: const Text(
+                                    "------기준",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey),
+                                  )),
+                            ],
+                          );
                         } else {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,6 +123,13 @@ class _ResultPageState extends State<ResultPage> {
               builder: (BuildContext context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
+                } else if (!snapshot.hasData) {
+                  return const Card(
+                      child: Center(
+                          child: Text(
+                    'CLAEN',
+                    style: TextStyle(fontSize: 30, color: Colors.black),
+                  )));
                 } else {
                   return (ListView.builder(
                       padding: const EdgeInsets.only(top: 0),
